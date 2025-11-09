@@ -1,40 +1,44 @@
-# backend/models.py
-
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, DateTime
+from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
-import os
 
 Base = declarative_base()
 
-class VideoTask(Base):
-    __tablename__ = "video_tasks"
-    id = Column(Integer, primary_key=True)
+# Canal do YouTube
+class Channel(Base):
+    __tablename__ = "channels"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    niche = Column(String, nullable=False)
+    youtube_url = Column(String, nullable=True)
+    monetization = Column(Float, default=0.0)
+
+    contents = relationship("Content", back_populates="channel")
+
+# Conteúdo (vídeos, shorts, etc.)
+class Content(Base):
+    __tablename__ = "contents"
+    id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    description = Column(String)
-    niche = Column(String)
-    status = Column(String, default="pending")
-    video_type = Column(String, default="short")  # short or long
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    type = Column(String, nullable=False)  # video_longo, short, ebook
+    script = Column(Text)
+    upload_date = Column(DateTime, default=datetime.utcnow)
+    channel_id = Column(Integer, ForeignKey("channels.id"))
 
-class SaleRecord(Base):
-    __tablename__ = "sale_records"
+    channel = relationship("Channel", back_populates="contents")
+
+# Tarefas (para agendamento de postagens)
+class Task(Base):
+    __tablename__ = "tasks"
     id = Column(Integer, primary_key=True)
-    product_name = Column(String)
-    amount = Column(Float)
-    reinvested = Column(Float)
+    task_type = Column(String)
+    status = Column(String, default="pendente")
     created_at = Column(DateTime, default=datetime.utcnow)
 
-def get_engine():
-    db_url = os.getenv("DATABASE_URL", "sqlite:///data.db")
-    return create_engine(db_url)
-
-def create_tables():
-    engine = get_engine()
-    Base.metadata.create_all(engine)
-
-if __name__ == "__main__":
-    create_tables()
-    print("✅ Tabelas criadas com sucesso!")
+# Finanças (controle de vendas e reinvestimento)
+class Finance(Base):
+    __tablename__ = "finances"
+    id = Column(Integer, primary_key=True)
+    total_earned = Column(Float, default=0.0)
+    reinvestment = Column(Float, default=0.0)
+    last_update = Column(DateTime, default=datetime.utcnow)
