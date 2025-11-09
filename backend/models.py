@@ -4,9 +4,8 @@ from datetime import datetime
 
 Base = declarative_base()
 
-# Canal do YouTube
+# YouTube Channel
 class Channel(Base):
-    class Channel(Base):
     __tablename__ = 'channels'
     id = Column(Integer, primary_key=True)
     name = Column(String(255))
@@ -14,7 +13,7 @@ class Channel(Base):
     subscribers = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Tarefa (shorts, vídeos longos, e-books, etc.)
+# Task (shorts, long videos, ebooks, etc.)
 class Task(Base):
     __tablename__ = 'tasks'
     id = Column(Integer, primary_key=True)
@@ -23,7 +22,7 @@ class Task(Base):
     status = Column(String(50), default='pending')
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Conteúdo (roteiros, descrições, títulos)
+# Content (scripts, descriptions, titles)
 class Content(Base):
     __tablename__ = 'contents'
     id = Column(Integer, primary_key=True)
@@ -33,7 +32,7 @@ class Content(Base):
     type = Column(String(50))
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Controle financeiro (afiliado, ebooks, etc.)
+# Finance (affiliate, ebooks, reinvestments)
 class Finance(Base):
     __tablename__ = 'finances'
     id = Column(Integer, primary_key=True)
