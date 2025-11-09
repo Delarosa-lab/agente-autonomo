@@ -6,6 +6,7 @@ Base = declarative_base()
 
 # Canal do YouTube
 class Channel(Base):
+    class Channel(Base):
     __tablename__ = 'channels'
     id = Column(Integer, primary_key=True)
     name = Column(String(255))
