@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, DateTime, Text
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
 
