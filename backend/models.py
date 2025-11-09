@@ -15,19 +15,19 @@ class Channel(Base):
 
     contents = relationship("Content", back_populates="channel")
 
-# Conteúdo (vídeos, shorts, etc.)
+# Conteúdo (vídeos, shorts, ebooks)
 class Content(Base):
     __tablename__ = "contents"
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    type = Column(String, nullable=False)  # video_longo, short, ebook
+    type = Column(String, nullable=False)  # "video", "short", "ebook"
     script = Column(Text)
     upload_date = Column(DateTime, default=datetime.utcnow)
     channel_id = Column(Integer, ForeignKey("channels.id"))
 
     channel = relationship("Channel", back_populates="contents")
 
-# Tarefas (para agendamento de postagens)
+# Tarefas (postagens automáticas)
 class Task(Base):
     __tablename__ = "tasks"
     id = Column(Integer, primary_key=True)
