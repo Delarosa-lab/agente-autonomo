@@ -15,4 +15,4 @@ EXPOSE 5000
 
 # Comando para rodar o app
 CMD ["python", "backend/app.py"]
-add Dockerfile
+
